@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Balance</title>
+</head>
+<body>
+<h1>Check Balance</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endwith %}
+
+<form method="POST">
+    <input type="text" name="account_no" placeholder="Account Number" required>
+    <button type="submit">Check Balance</button>
+</form>
+
+{% if result %}
+<h2>Account Details</h2>
+<p>Account Number: {{ result[0] }}</p>
+<p>Name: {{ result[1] }}</p>
+<p>Phone: {{ result[2] }}</p>
+<p>Address: {{ result[3] }}</p>
+<p>Account Type: {{ result[4] }}</p>
+<h3>Balance: ₹{{ result[5] }}</h3>
+{% endif %}
+
+<a href="/">Home</a>
+</body>
+</html>
