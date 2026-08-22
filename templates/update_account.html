@@ -1,33 +1,444 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Update Account</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Update Accounts | Bank Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-<h1>Update Account</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+    <nav class="navbar">
 
-{% for account in accounts %}
-<div>
-    <p>
-        <b>{{ account[0] }}</b> -
-        {{ account[1] }} -
-        {{ account[4] }} -
-        ₹{{ account[5] }}
-    </p>
+        <div class="logo">
+            🏦 Bank Management System
+        </div>
 
-    <a href="{{ url_for('edit_account', account_no=account[0]) }}">
-        Edit Account
-    </a>
-</div>
-<hr>
-{% endfor %}
+        <a href="/" class="nav-home">
+            Home
+        </a>
 
-<a href="/">Home</a>
+    </nav>
+
+
+    <main class="update-container">
+
+        <section class="update-card">
+
+            <!-- HEADER -->
+
+            <div class="update-header">
+
+                <div class="header-left">
+
+                    <div class="large-page-icon">
+                        ✏️
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Update Accounts
+                        </h1>
+
+                        <p>
+                            Search and update customer account information
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="total-accounts">
+
+                    <span>
+                        Total Accounts
+                    </span>
+
+                    <strong id="memberCount">
+                        {{ accounts|length }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="alert {{ category }}">
+
+                            {% if category == "success" %}
+                                ✅
+                            {% else %}
+                                ⚠️
+                            {% endif %}
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- SEARCH -->
+
+            <div class="search-section">
+
+                <div class="search-title">
+                    <strong>Find Customer Account</strong>
+
+                    <span>
+                        Search by account number, name or phone number
+                    </span>
+                </div>
+
+                <div class="large-search-box">
+
+                    <span>
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="accountSearch"
+                        placeholder="Search account number, customer name or phone..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            {% if accounts %}
+
+            <div class="table-container">
+
+                <table class="modern-accounts-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ACCOUNT</th>
+
+                            <th>CUSTOMER</th>
+
+                            <th>PHONE</th>
+
+                            <th>ADDRESS</th>
+
+                            <th>TYPE</th>
+
+                            <th>BALANCE</th>
+
+                            <th>ACTION</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="accountsBody">
+
+                        {% for account in accounts %}
+
+                        <tr class="account-row">
+
+                            <!-- ACCOUNT -->
+
+                            <td>
+
+                                <div class="account-number-box">
+
+                                    <span class="account-hash">
+                                        #
+                                    </span>
+
+                                    <strong>
+                                        {{ account[0] }}
+                                    </strong>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- CUSTOMER -->
+
+                            <td>
+
+                                <div class="customer-box">
+
+                                    <div class="customer-avatar">
+
+                                        {{ account[1][0]|upper }}
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            {{ account[1] }}
+                                        </strong>
+
+                                        <span>
+                                            Customer
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- PHONE -->
+
+                            <td>
+
+                                <span class="phone-text">
+                                    📱 {{ account[2] }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- ADDRESS -->
+
+                            <td>
+
+                                <span class="address-text">
+                                    📍 {{ account[3] }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACCOUNT TYPE -->
+
+                            <td>
+
+                                {% if account[4] == "saving" %}
+
+                                    <span class="type-badge saving">
+                                        Saving
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="type-badge current">
+                                        Current
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- BALANCE -->
+
+                            <td>
+
+                                <strong class="balance-text">
+                                    ₹{{ account[5] }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <a
+                                    href="{{ url_for('edit_account', account_no=account[0]) }}"
+                                    class="edit-account-btn"
+                                >
+
+                                    ✏️ Edit
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+
+                <!-- NO SEARCH RESULT -->
+
+                <div
+                    id="noResults"
+                    class="no-results"
+                    style="display:none;"
+                >
+
+                    <div>
+                        🔍
+                    </div>
+
+                    <h3>
+                        No Account Found
+                    </h3>
+
+                    <p>
+                        Try another account number, name or phone number.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% else %}
+
+            <!-- EMPTY DATABASE -->
+
+            <div class="empty-accounts">
+
+                <div>
+                    👥
+                </div>
+
+                <h2>
+                    No Accounts Available
+                </h2>
+
+                <p>
+                    There are no customer accounts in the database.
+                </p>
+
+                <a
+                    href="{{ url_for('create_account') }}"
+                    class="create-account-btn"
+                >
+                    ➕ Create Account
+                </a>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- BACK -->
+
+            <div class="page-bottom">
+
+                <a
+                    href="/"
+                    class="back-dashboard"
+                >
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const searchInput =
+            document.getElementById("accountSearch");
+
+        const rows =
+            document.querySelectorAll(".account-row");
+
+        const memberCount =
+            document.getElementById("memberCount");
+
+        const noResults =
+            document.getElementById("noResults");
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener("input", function () {
+
+                const searchValue =
+                    this.value.toLowerCase().trim();
+
+                let visibleRows = 0;
+
+
+                rows.forEach(function (row) {
+
+                    const text =
+                        row.textContent.toLowerCase();
+
+
+                    if (text.includes(searchValue)) {
+
+                        row.style.display = "";
+
+                        visibleRows++;
+
+                    } else {
+
+                        row.style.display = "none";
+
+                    }
+
+                });
+
+
+                if (memberCount) {
+
+                    memberCount.textContent =
+                        visibleRows;
+
+                }
+
+
+                if (noResults) {
+
+                    if (visibleRows === 0) {
+
+                        noResults.style.display = "block";
+
+                    } else {
+
+                        noResults.style.display = "none";
+
+                    }
+
+                }
+
+            });
+
+        }
+
+    </script>
+
 </body>
+
 </html>
