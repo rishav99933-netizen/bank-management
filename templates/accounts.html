@@ -1,45 +1,195 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>All Accounts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
 
-<h1>All Accounts</h1>
+    <div class="navbar">
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+        <div class="logo">
+            🏦 Bank Management
+        </div>
 
-<table border="1" cellpadding="8">
+        <a href="/">
+            Home
+        </a>
 
-<tr>
-    <th>Account No</th>
-    <th>Name</th>
-    <th>Phone</th>
-    <th>Address</th>
-    <th>Type</th>
-    <th>Balance</th>
-</tr>
+    </div>
 
-{% for account in accounts %}
 
-<tr>
-    <td>{{ account[0] }}</td>
-    <td>{{ account[1] }}</td>
-    <td>{{ account[2] }}</td>
-    <td>{{ account[3] }}</td>
-    <td>{{ account[4] }}</td>
-    <td>₹{{ account[5] }}</td>
-</tr>
+    <div class="page-container">
 
-{% endfor %}
+        <div class="page-header">
 
-</table>
+            <div>
 
-<a href="/">Home</a>
+                <h1>👥 All Bank Accounts</h1>
+
+                <p>
+                    View all registered bank members and their account details.
+                </p>
+
+            </div>
+
+            <a href="/" class="secondary-button">
+                ← Back to Home
+            </a>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-container">
+
+                    {% for category, message in messages %}
+
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if accounts %}
+
+            <div class="account-table-container">
+
+                <div class="table-header">
+
+                    <h2>Registered Members</h2>
+
+                    <span>
+                        {{ accounts|length }} Account{% if accounts|length != 1 %}s{% endif %}
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="account-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Account No.</th>
+
+                                <th>Name</th>
+
+                                <th>Phone</th>
+
+                                <th>Address</th>
+
+                                <th>Account Type</th>
+
+                                <th>Balance</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for account in accounts %}
+
+                                <tr>
+
+                                    <td>
+                                        <strong>#{{ account[0] }}</strong>
+                                    </td>
+
+                                    <td>
+                                        {{ account[1] }}
+                                    </td>
+
+                                    <td>
+                                        {{ account[2] }}
+                                    </td>
+
+                                    <td class="address-cell">
+                                        {{ account[3] }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if account[4] == "saving" %}
+
+                                            <span class="account-badge saving">
+                                                Saving
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="account-badge current">
+                                                Current
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+                                    <td class="balance-cell">
+                                        ₹{{ account[5] }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    👤
+                </div>
+
+                <h2>No Accounts Found</h2>
+
+                <p>
+                    There are currently no bank accounts in the system.
+                </p>
+
+                <a href="/create-account" class="primary-button">
+                    ➕ Create First Account
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
 
 </body>
+
 </html>
