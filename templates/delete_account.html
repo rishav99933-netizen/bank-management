@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Account</title>
+</head>
+<body>
+<h1>Delete Account</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endwith %}
+
+{% for account in accounts %}
+
+<div>
+    <p>
+        Account: {{ account[0] }} |
+        Name: {{ account[1] }} |
+        Balance: ₹{{ account[5] }}
+    </p>
+
+    <form method="POST"
+          action="{{ url_for('delete_single_account', account_no=account[0]) }}">
+
+        <button type="submit"
+                onclick="return confirm('Delete this account?')">
+            Delete
+        </button>
+
+    </form>
+</div>
+
+<hr>
+
+{% endfor %}
+
+<a href="/">Home</a>
+</body>
+</html>
