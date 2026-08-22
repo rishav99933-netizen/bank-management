@@ -1,41 +1,595 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Delete Account</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Accounts | Bank Management System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* DELETE ACCOUNT PAGE */
+
+        .delete-page {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .delete-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .delete-header .page-icon {
+            font-size: 52px;
+            margin-bottom: 10px;
+        }
+
+        .delete-header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .delete-header p {
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .account-toolbar {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #dbe3ef;
+            border-radius: 12px;
+            padding: 0 18px;
+            box-sizing: border-box;
+        }
+
+        .search-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .search-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 16px 8px;
+            font-size: 15px;
+            background: transparent;
+        }
+
+        .account-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 16px 22px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .account-count span {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .account-count strong {
+            background: #2563eb;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .accounts-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .accounts-table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        .accounts-table th {
+            background: #f1f5f9;
+            color: #334155;
+            text-align: left;
+            padding: 17px 16px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .accounts-table td {
+            padding: 17px 16px;
+            border-top: 1px solid #e2e8f0;
+            color: #475569;
+            vertical-align: middle;
+        }
+
+        .accounts-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .account-number {
+            font-weight: 700;
+            color: #2563eb !important;
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .member-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .member-info strong {
+            display: block;
+            color: #1e293b;
+        }
+
+        .member-info span {
+            display: block;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .account-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .saving-type {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .current-type {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .balance {
+            font-weight: 700;
+            color: #15803d;
+        }
+
+        .delete-button {
+            border: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 9px 15px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .delete-button:hover {
+            background: #dc2626;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+        }
+
+        .back-link-box {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 20px;
+        }
+
+        .back-link-box a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+
+            .delete-header h1 {
+                font-size: 28px;
+            }
+
+            .page-container {
+                padding: 20px 12px;
+            }
+
+            .accounts-table-wrapper {
+                border-radius: 12px;
+            }
+        }
+    </style>
 </head>
+
+
 <body>
-<h1>Delete Account</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+    <nav class="navbar">
 
-{% for account in accounts %}
+        <div class="logo">
+            🏦 Bank Management System
+        </div>
 
-<div>
-    <p>
-        Account: {{ account[0] }} |
-        Name: {{ account[1] }} |
-        Balance: ₹{{ account[5] }}
-    </p>
+        <a href="/">
+            Home
+        </a>
 
-    <form method="POST"
-          action="{{ url_for('delete_single_account', account_no=account[0]) }}">
+    </nav>
 
-        <button type="submit"
-                onclick="return confirm('Delete this account?')">
-            Delete
-        </button>
 
-    </form>
-</div>
+    <main class="page-container wide-page">
 
-<hr>
+        <section class="delete-page">
 
-{% endfor %}
+            <!-- HEADER -->
 
-<a href="/">Home</a>
+            <div class="delete-header">
+
+                <div class="page-icon">
+                    🗑️
+                </div>
+
+                <h1>
+                    Delete Accounts
+                </h1>
+
+                <p>
+                    Search for an account and permanently delete it.
+                </p>
+
+            </div>
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="alert {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- SEARCH -->
+
+            <div class="account-toolbar">
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="accountSearch"
+                        placeholder="Search by account number, name or phone..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT COUNT -->
+
+            {% if accounts %}
+
+                <div class="account-count">
+
+                    <span>
+                        👥 Total Members
+                    </span>
+
+                    <strong id="memberCount">
+                        {{ accounts|length }}
+                    </strong>
+
+                </div>
+
+
+                <!-- TABLE -->
+
+                <div class="accounts-table-wrapper">
+
+                    <table
+                        class="accounts-table"
+                        id="accountsTable"
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Account No.
+                                </th>
+
+                                <th>
+                                    Member
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Address
+                                </th>
+
+                                <th>
+                                    Account Type
+                                </th>
+
+                                <th>
+                                    Balance
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="accountsBody">
+
+                            {% for account in accounts %}
+
+                                <tr class="account-row">
+
+                                    <td class="account-number">
+                                        #{{ account[0] }}
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="member-info">
+
+                                            <div class="member-avatar">
+                                                {{ account[1][0]|upper }}
+                                            </div>
+
+                                            <div>
+
+                                                <strong class="member-name">
+                                                    {{ account[1] }}
+                                                </strong>
+
+                                                <span>
+                                                    Customer
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td class="member-phone">
+                                        {{ account[2] }}
+                                    </td>
+
+
+                                    <td class="member-address">
+                                        {{ account[3] }}
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if account[4] == "saving" %}
+
+                                            <span class="account-type saving-type">
+                                                Saving
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="account-type current-type">
+                                                Current
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td class="balance">
+                                        ₹{{ "%.2f"|format(account[5]) }}
+                                    </td>
+
+
+                                    <td>
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('delete_single_account', account_no=account[0]) }}"
+                                            onsubmit="return confirmDelete('{{ account[1] }}', '{{ account[0] }}');"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="delete-button"
+                                            >
+                                                🗑️ Delete
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="accounts-table-wrapper">
+
+                    <div class="empty-message">
+
+                        <h2>
+                            No Accounts Found
+                        </h2>
+
+                        <p>
+                            There are currently no bank accounts to delete.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- BACK -->
+
+            <div class="back-link-box">
+
+                <a href="/">
+                    ← Back to Dashboard
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- SEARCH + DELETE SCRIPT -->
+
+    <script>
+
+        const searchInput =
+            document.getElementById("accountSearch");
+
+        const rows =
+            document.querySelectorAll(".account-row");
+
+        const memberCount =
+            document.getElementById("memberCount");
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    const search =
+                        this.value.toLowerCase().trim();
+
+                    let visibleCount = 0;
+
+
+                    rows.forEach(function (row) {
+
+                        const text =
+                            row.textContent.toLowerCase();
+
+                        if (text.includes(search)) {
+
+                            row.style.display = "";
+
+                            visibleCount++;
+
+                        } else {
+
+                            row.style.display = "none";
+
+                        }
+
+                    });
+
+
+                    if (memberCount) {
+
+                        memberCount.textContent =
+                            visibleCount;
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        function confirmDelete(name, accountNo) {
+
+            return confirm(
+                "⚠️ Delete Account?\n\n" +
+                "Account No: " + accountNo + "\n" +
+                "Customer: " + name + "\n\n" +
+                "This action cannot be undone."
+            );
+
+        }
+
+    </script>
+
 </body>
+
 </html>
