@@ -1,52 +1,387 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Edit Account</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Account | Bank Management System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .edit-page {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .edit-card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .edit-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .edit-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .edit-header h1 {
+            margin: 0;
+            font-size: 34px;
+            color: #1e293b;
+        }
+
+        .edit-header p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .account-number-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: white;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .balance-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 10px;
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .save-button {
+            flex: 1;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-button {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #334155;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
+
+        .cancel-button:hover {
+            background: #e2e8f0;
+        }
+
+        @media (max-width: 700px) {
+
+            .edit-card {
+                padding: 22px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .input-group.full {
+                grid-column: auto;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
-<h1>Edit Account</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+    <nav class="navbar">
 
-<form method="POST">
+        <div class="logo">
+            🏦 Bank Management System
+        </div>
 
-    <label>Name</label>
-    <input type="text" name="name" value="{{ account[1] }}" required>
+        <a href="/">
+            Home
+        </a>
 
-    <br><br>
+    </nav>
 
-    <label>Phone</label>
-    <input type="text" name="phone_no" value="{{ account[2] }}" required>
 
-    <br><br>
+    <main class="page-container wide-page">
 
-    <label>Address</label>
-    <input type="text" name="address" value="{{ account[3] }}" required>
+        <section class="edit-page">
 
-    <br><br>
+            <div class="edit-card">
 
-    <label>Account Type</label>
+                <div class="edit-header">
 
-    <select name="account_type" required>
-        <option value="saving" {% if account[4] == 'saving' %}selected{% endif %}>
-            Saving
-        </option>
+                    <div class="edit-icon">
+                        ✏️
+                    </div>
 
-        <option value="current" {% if account[4] == 'current' %}selected{% endif %}>
-            Current
-        </option>
-    </select>
+                    <h1>
+                        Edit Account
+                    </h1>
 
-    <br><br>
+                    <p>
+                        Update customer account information.
+                    </p>
 
-    <button type="submit">Update Account</button>
+                </div>
 
-</form>
 
-<a href="{{ url_for('update_account') }}">Back</a>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        {% for category, message in messages %}
+
+                            <div class="alert {{ category }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endwith %}
+
+
+                <div class="account-number-box">
+
+                    Account Number:
+                    #{{ account[0] }}
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('edit_account', account_no=account[0]) }}"
+                >
+
+                    <div class="form-row">
+
+                        <div class="input-group">
+
+                            <label for="name">
+                                Customer Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value="{{ account[1] }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="phone_no">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="phone_no"
+                                name="phone_no"
+                                value="{{ account[2] }}"
+                                maxlength="10"
+                                inputmode="numeric"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group full">
+
+                            <label for="address">
+                                Address
+                            </label>
+
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                value="{{ account[3] }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="account_type">
+                                Account Type
+                            </label>
+
+                            <select
+                                id="account_type"
+                                name="account_type"
+                                required
+                            >
+
+                                <option
+                                    value="saving"
+                                    {% if account[4] == "saving" %}selected{% endif %}
+                                >
+                                    Saving
+                                </option>
+
+                                <option
+                                    value="current"
+                                    {% if account[4] == "current" %}selected{% endif %}
+                                >
+                                    Current
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Current Balance
+                            </label>
+
+                            <div class="balance-box">
+                                ₹{{ "%.2f"|format(account[5]) }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="button-row">
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            💾 Save Changes
+                        </button>
+
+
+                        <a
+                            href="{{ url_for('update_account') }}"
+                            class="cancel-button"
+                        >
+                            ← Cancel
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        document.getElementById("phone_no").addEventListener(
+            "input",
+            function () {
+
+                this.value = this.value.replace(/\D/g, "");
+
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+
+            }
+        );
+
+    </script>
+
 </body>
+
 </html>
