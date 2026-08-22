@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Account</title>
+</head>
+<body>
+<h1>Edit Account</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endwith %}
+
+<form method="POST">
+
+    <label>Name</label>
+    <input type="text" name="name" value="{{ account[1] }}" required>
+
+    <br><br>
+
+    <label>Phone</label>
+    <input type="text" name="phone_no" value="{{ account[2] }}" required>
+
+    <br><br>
+
+    <label>Address</label>
+    <input type="text" name="address" value="{{ account[3] }}" required>
+
+    <br><br>
+
+    <label>Account Type</label>
+
+    <select name="account_type" required>
+        <option value="saving" {% if account[4] == 'saving' %}selected{% endif %}>
+            Saving
+        </option>
+
+        <option value="current" {% if account[4] == 'current' %}selected{% endif %}>
+            Current
+        </option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Update Account</button>
+
+</form>
+
+<a href="{{ url_for('update_account') }}">Back</a>
+</body>
+</html>
