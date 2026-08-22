@@ -1,23 +1,351 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Withdraw Money</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Withdraw Money | Bank Management System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef4ff, #f8fbff);
+            color: #1e293b;
+        }
+
+        .navbar {
+            height: 72px;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            color: white;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.12);
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            background: rgba(255,255,255,0.22);
+        }
+
+        .container {
+            width: 92%;
+            max-width: 650px;
+            margin: 55px auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            width: 75px;
+            height: 75px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            border-radius: 22px;
+            font-size: 34px;
+            box-shadow: 0 10px 25px rgba(220,38,38,0.25);
+        }
+
+        h1 {
+            margin-top: 18px;
+            font-size: 32px;
+            color: #0f172a;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 12px 35px rgba(15,23,42,0.10);
+            border: 1px solid #e2e8f0;
+        }
+
+        .flash {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 9px;
+            color: #334155;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .currency {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        input:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 4px rgba(220,38,38,0.10);
+        }
+
+        .amount-input {
+            padding-left: 45px;
+        }
+
+        .withdraw-btn {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220,38,38,0.25);
+        }
+
+        .info-box {
+            margin-top: 22px;
+            padding: 15px 18px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+            color: #9a3412;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+            padding: 25px;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 30px auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .icon {
+                width: 65px;
+                height: 65px;
+                font-size: 30px;
+            }
+        }
+
+    </style>
 </head>
+
 <body>
-<h1>Withdraw Money</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+    <nav class="navbar">
 
-<form method="POST">
-    <input type="text" name="account_no" placeholder="Account Number" required>
-    <input type="number" name="amount" placeholder="Amount" required>
-    <button type="submit">Withdraw</button>
-</form>
+        <div class="logo">
+            🏦 Bank Management
+        </div>
 
-<a href="/">Home</a>
+        <a href="{{ url_for('home') }}" class="home-btn">
+            🏠 Home
+        </a>
+
+    </nav>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <div class="icon">
+                💸
+            </div>
+
+            <h1>Withdraw Money</h1>
+
+            <p class="subtitle">
+                Withdraw money securely from an existing bank account.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form method="POST">
+
+                <div class="form-group">
+
+                    <label for="account_no">
+                        Account Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="account_no"
+                        name="account_no"
+                        placeholder="Enter account number"
+                        inputmode="numeric"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="amount">
+                        Withdrawal Amount
+                    </label>
+
+                    <div class="input-box">
+
+                        <span class="currency">₹</span>
+
+                        <input
+                            type="text"
+                            id="amount"
+                            name="amount"
+                            class="amount-input"
+                            placeholder="Enter withdrawal amount"
+                            inputmode="numeric"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="withdraw-btn">
+                    💸 Withdraw Money
+                </button>
+
+            </form>
+
+
+            <div class="info-box">
+                ⚠️ Please make sure your account has sufficient
+                balance before making a withdrawal.
+            </div>
+
+
+            <a href="{{ url_for('home') }}" class="back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 Bank Management System
+    </footer>
+
 </body>
 </html>
