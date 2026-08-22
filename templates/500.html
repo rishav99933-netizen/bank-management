@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Server Error</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-    <h1>500 - Internal Server Error</h1>
-    <p>Something went wrong on the server.</p>
+
+    <div class="navbar">
+
+        <div class="logo">
+            🏦 Bank Management
+        </div>
+
+        <a href="/">
+            Home
+        </a>
+
+    </div>
+
+
+    <div class="error-page">
+
+        <div class="error-card">
+
+            <div class="error-number">
+                500
+            </div>
+
+            <div class="error-icon">
+                ⚠️
+            </div>
+
+            <h1>
+                Something Went Wrong
+            </h1>
+
+            <p>
+                Sorry, an unexpected server error occurred.
+                Please try again after some time.
+            </p>
+
+            <a href="/" class="primary-button">
+                🏠 Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
 </body>
+
 </html>
