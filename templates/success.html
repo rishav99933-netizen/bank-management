@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+
+<h1>{{ title }}</h1>
+
+<p>{{ message }}</p>
+
+{% if details %}
+
+{% for key, value in details.items() %}
+
+<p>
+    <b>{{ key }}:</b> {{ value }}
+</p>
+
+{% endfor %}
+
+{% endif %}
+
+<a href="/">Home</a>
+
+</body>
+</html>
