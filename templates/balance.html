@@ -1,32 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Check Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Balance Check | Bank Management System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-<h1>Check Balance</h1>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% for category, message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endwith %}
+    <nav class="navbar">
 
-<form method="POST">
-    <input type="text" name="account_no" placeholder="Account Number" required>
-    <button type="submit">Check Balance</button>
-</form>
+        <div class="logo">
+            🏦 Bank Management System
+        </div>
 
-{% if result %}
-<h2>Account Details</h2>
-<p>Account Number: {{ result[0] }}</p>
-<p>Name: {{ result[1] }}</p>
-<p>Phone: {{ result[2] }}</p>
-<p>Address: {{ result[3] }}</p>
-<p>Account Type: {{ result[4] }}</p>
-<h3>Balance: ₹{{ result[5] }}</h3>
-{% endif %}
+        <a href="/">
+            Home
+        </a>
 
-<a href="/">Home</a>
+    </nav>
+
+    <main class="form-container">
+
+        <h1>💳 Balance Check</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form method="POST">
+
+            <label for="account_no">
+                Account Number
+            </label>
+
+            <input
+                type="text"
+                id="account_no"
+                name="account_no"
+                placeholder="Enter account number"
+                inputmode="numeric"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit" class="form-button">
+                💳 Check Balance
+            </button>
+
+        </form>
+
+        {% if result %}
+
+            <div class="result-card">
+
+                <p>
+                    <strong>Account Number:</strong>
+                    {{ result[0] }}
+                </p>
+
+                <p>
+                    <strong>Account Holder:</strong>
+                    {{ result[1] }}
+                </p>
+
+                <p>
+                    <strong>Phone Number:</strong>
+                    {{ result[2] }}
+                </p>
+
+                <p>
+                    <strong>Address:</strong>
+                    {{ result[3] }}
+                </p>
+
+                <p>
+                    <strong>Account Type:</strong>
+                    {{ result[4].title() }}
+                </p>
+
+                <p>
+                    <strong>Current Balance:</strong>
+                    ₹{{ result[5] }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+        <a href="/" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+    </main>
+
 </body>
+
 </html>
