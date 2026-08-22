@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Account</title>
+</head>
+<body>
+<h1>Update Account</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endwith %}
+
+{% for account in accounts %}
+<div>
+    <p>
+        <b>{{ account[0] }}</b> -
+        {{ account[1] }} -
+        {{ account[4] }} -
+        ₹{{ account[5] }}
+    </p>
+
+    <a href="{{ url_for('edit_account', account_no=account[0]) }}">
+        Edit Account
+    </a>
+</div>
+<hr>
+{% endfor %}
+
+<a href="/">Home</a>
+</body>
+</html>
